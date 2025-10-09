@@ -1,9 +1,15 @@
-# Discord-Repost-Bot
+# Discord Repost Server
 
-This is a Node.js app that serves as the backend for a Discord bot that helps with sharing media from other websites.
+This is a Node.js server application that helps with sharing media from other websites on Discord.
+It is intended to be used together with a compatible client, namely:
 
-As of now this bot is only able to share reddit posts in Discord server channels.
-Further features and changes to how this bot is used may follow.
+* [Discord Repost Browser Extenstion](https://github.com/LuxGrey/Discord-Repost-Browser-Extension)
+
+This server application exists so that client applications may use the provided functionalities without requiring knowledge of some sensitive secrets
+(Discord webhook URL, Discord bot token, etc.).
+
+As of now this application is only able to share reddit posts in Discord server channels and is only able to do so using a webhook URL.
+Further features and changes to how this application is used may follow.
 
 ## Requirements
 
@@ -15,32 +21,33 @@ Further features and changes to how this bot is used may follow.
 
 Create a `.env` file in the app's root directory, based on `.env.sample`, and make the following adjustments:
 
-* `BOT_TOKEN` = the bot token of the registered Discord Application that you want to be controlled by this app
-* `CHANNEL_ID` = the ID of the Discord server channel that the bot should post to
-
-The Discord bot that will be controlled by the app of course needs to have access to the configured server channel as well as have permissions for sending messages and embedding links.
+* `DISCORD_WEBHOOK_URL` = the URL of the [Discord webhook](https://discord.com/developers/docs/resources/webhook) for the channel that media should be posted to
 
 Start the app with `npm start`.
-Once it is running, you can prompt the bot to send Discord messages by sending requests to the REST-API.
-
-**I plan to develop a web browser plugin that adds buttons to reddit posts which send the relevant requests to the REST-API when clicked.**
+Once it is running, you can prompt the server to send Discord messages by sending requests to the REST-API, ideally using a compatible client.
 
 ### REST-API
 
 #### Share a reddit post
 
-`POST /share/reddit`
+`POST /api/share/reddit`
 
 JSON-Body:
+
 ```json
-{"postUrl":"<postUrl>"}
+{
+    "postUrl":"<postUrl>",
+    "embedUrl":"<embedUrl>"
+}
 ```
-where `<postUrl>` may be the URL of a subreddit post (i.e. `www.reddit.com/r/<subreddit>/comments/<postId>/<postTitle>/`)
+
+* `<postUrl>` may be the URL of a subreddit post (i.e. `www.reddit.com/r/<subreddit>/comments/<postId>/<postTitle>/`)
 or a user profile post (i.e. `www.reddit.com/user/<user>/comments/<postId>/<postTitle>/`)
+* `embedUrl` is an optional key; `<embedUrl>` may be any URL that should be posted alongside the reddit post URL in order to provide an alternative embed
 
 ## Security
 
-The app does not support HTTPS requests, so all requests that prompt the bot to send messages on Discord must be performed
-over basic unencrypted HTTP.
+The server application itself only supports HTTP and not HTTPS.
+There are also no authorization checks in place to limit who can prompt the bot; if not otherwise prevented, anyone with knowledge of the IP address of the server can prompt it to send Discord messages to the configured channel.
 
-There are no authorization checks in place to limit who can prompt the bot; if not otherwise prevented, anyone with knowledge of the IP address of the hosting server can prompt it to send Discord messages to the configured channel.
+To address the above points, it is recommended to place the server application behind a reverse proxy to allow/force clients to make requests using HTTPS and to limit which clients can make use of the application's functionalities through appropriate authorization checks.

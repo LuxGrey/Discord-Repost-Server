@@ -46,7 +46,7 @@ function isRedditShareValid(requestBody) {
         try {
             url = new URL(embedUrl);
         } catch (err) {
-            console.error('requestUrl is not a valid URL:', embedUrl);
+            console.error('embedUrl is not a valid URL:', embedUrl);
             return false;
         }
     }
@@ -79,7 +79,7 @@ function buildRxdditUrl(redditPostUrl) {
 
 /**
  * Assumes to receive an URL to a reddit post and an embed URL that was used to supply the content for that post.
- * Builds a message that contains the reddit post URL in non-embed format and the embed URL for the alternative embed.
+ * Builds a message that contains the reddit post URL with suppressed embed and the embed URL for the alternative embed.
  */
 function buildRedditWithEmbedMessage(redditPostUrl, embedUrl) {
     return `<${redditPostUrl}>\n${embedUrl}`;

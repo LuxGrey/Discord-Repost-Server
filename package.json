@@ -1,15 +1,15 @@
 {
-  "name": "discord-repost-bot",
+  "name": "discord-repost-server",
   "private": true,
   "version": "1.0.0",
-  "description": "A Discord bot that helps with sharing content from other websites in a Discord server channel",
-  "homepage": "https://github.com/LuxGrey/Discord-Repost-Bot#readme",
+  "description": "A server application that helps with sharing media from other websites in a Discord server channel",
+  "homepage": "https://github.com/LuxGrey/Discord-Repost-Server#readme",
   "bugs": {
-    "url": "https://github.com/LuxGrey/Discord-Repost-Bot/issues"
+    "url": "https://github.com/LuxGrey/Discord-Repost-Server/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/LuxGrey/Discord-Repost-Bot.git"
+    "url": "git+https://github.com/LuxGrey/Discord-Repost-Server.git"
   },
   "license": "MIT",
   "author": "LuxGrey",
