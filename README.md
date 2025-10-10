@@ -3,7 +3,7 @@
 This is a Node.js server application that helps with sharing media from other websites on Discord.
 It is intended to be used together with a compatible client, namely:
 
-* [Discord Repost Browser Extenstion](https://github.com/LuxGrey/Discord-Repost-Browser-Extension)
+* [Discord Repost Browser Extension](https://github.com/LuxGrey/Discord-Repost-Browser-Extension)
 
 This server application exists so that client applications may use the provided functionalities without requiring knowledge of some sensitive secrets
 (Discord webhook URL, Discord bot token, etc.).

@@ -144,7 +144,7 @@ function buildCustomEmbedsMessageContents(redditPostUrl, embedUrls) {
         if (messageParts.length === MAX_EMBEDS_PER_DISCORD_MESSAGE) {
             // assemble message parts into content for a single message and prepare to build the next message string
 
-            // concatenate message parts with a single space inbetween
+            // concatenate message parts with a single space between
             messageContents[messageIndex] += messageParts.join(' ');
             // reset messageParts array
             messageParts = [];
