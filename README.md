@@ -37,13 +37,17 @@ JSON-Body:
 ```json
 {
     "postUrl":"<postUrl>",
-    "embedUrl":"<embedUrl>"
+    "embedUrls": [
+        "<embedUrl1>",
+        "<embedUrl2>"
+    ]
 }
 ```
 
 * `<postUrl>` may be the URL of a subreddit post (i.e. `www.reddit.com/r/<subreddit>/comments/<postId>/<postTitle>/`)
 or a user profile post (i.e. `www.reddit.com/user/<user>/comments/<postId>/<postTitle>/`)
-* `embedUrl` is an optional key; `<embedUrl>` may be any URL that should be posted alongside the reddit post URL in order to provide an alternative embed
+* `embedUrls` is an optional key; if provided, it must be a non-empty array
+  * `<embedUrlN>` may be any URL that should be posted alongside the reddit post URL in order to provide an alternative embed
 
 ## Security
 
