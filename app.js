@@ -2,6 +2,7 @@ import 'dotenv/config';
 import express from 'express';
 import shareRoutes from './routes/shareRoutes.js';
 import morgan from 'morgan';
+import cors from 'cors';
 
 // Create an express app
 const app = express();
@@ -10,6 +11,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(morgan('combined')); // request logging
 app.use(express.json()); // for parsing application/json
+app.use(cors()); // add CORS support
 
 // routes
 app.use('/api/share', shareRoutes);
