@@ -86,23 +86,26 @@ function isRedditShareValid(requestBody) {
 }
 
 /**
- * Builds Discord message contents from the request body so that the reddit post contents will be properly displayed in Discord.
- * May build contents for multiple Discord messages if one does not suffice for displaying all post contents (relevant for reddit gallery posts).
+ * Builds Discord message contents from the request body so that the reddit post contents will be properly displayed
+ * in Discord.
+ * May build contents for multiple Discord messages if one does not suffice for displaying all post contents
+ * (relevant for reddit gallery posts).
  * 
  * @param {Object} requestBody
  * @returns {string[]} an array of strings that represent the intended contents for one or more Discord messages
  */
 function buildRedditMessageContents(requestBody) {
     const postUrl = requestBody.postUrl;
+    const postTitle = requestBody.postTitle;
     const embedUrls = requestBody.embedUrls;
 
     if (embedUrls) {
-        // build the message to include the provided embed URLs alongside the reddit URL
-        return buildCustomEmbedsMessageContents(postUrl, embedUrls);
+        // build the message to include the provided embed URLs alongside the reddit URL and post title
+        return buildCustomEmbedsMessageContents(postUrl, postTitle, embedUrls);
     }
 
-    // simple post without additional embed URLs, use rxddit URL for better embed
-    return [buildRxdditUrl(postUrl)];
+    // fall back to just posting the unaltered reddit post URL 
+    return [postUrl];
 }
 
 /**
@@ -122,19 +125,26 @@ function buildRxdditUrl(redditPostUrl) {
  * The content will start with the reddit post URL, enclosed in '<>' to prevent embed rendering in Discord, followed by
  * the provided embed URLs.
  * The embed URls will have custom link texts that enumerate the media.
- * Since a single Discord message can seemingly only render up to 5 URL-based embeds, embed URLs will be distributed onto multiple message strings as needed.
+ * Since a single Discord message can seemingly only render up to 5 URL-based embeds, embed URLs will be distributed
+ * onto multiple message strings as needed.
  * 
  * @param {string} redditPostUrl
+ * @param {string|undefined} redditPostTitle
  * @param {string[]} embedUrls
  * @returns {string[]} strings with contents intended for one Discord message each
  */
-function buildCustomEmbedsMessageContents(redditPostUrl, embedUrls) {
+function buildCustomEmbedsMessageContents(redditPostUrl, redditPostTitle, embedUrls) {
     // initialize message contents with empty strings
     const amountMessages = Math.ceil(embedUrls.length / MAX_EMBEDS_PER_DISCORD_MESSAGE);
     const messageContents = new Array(amountMessages).fill('');
 
-    // start first message with reddit link enclosed in '<>' to prevent an embed from being rendered for it in Discord
-    messageContents[0] += `<${redditPostUrl}>\n`;
+    // start first message with reddit link enclosed in '<>' to prevent an embed from being rendered for it in Discord,
+    // followed by the post title
+    let postMetaData = `<${redditPostUrl}>\n`;
+    if (redditPostTitle) {
+        postMetaData += `${redditPostTitle}\n`;
+    }
+    messageContents[0] += postMetaData;
 
     let messageParts = [];
     let messageIndex = 0;
